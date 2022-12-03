@@ -3,91 +3,56 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use CodeIgniter\API\ResponseTrait;
 use App\Models\Modelproduk;
 
 class Produk extends ResourceController
 {
-    use ResponseTrait;
-    function __construct()
-    {
-        $this->model = new Modelproduk();
-    }
-
+    /**
+     * Return an array of resource objects, themselves in array format
+     *
+     * @return mixed
+     */
     public function index()
     {
-        $data = $this->model->orderBy('nama', 'asc')->findAll();
-        return $this->respond($data, 200);
+        $modelProduk = new Modelproduk();
+        $data = $modelProduk->findAll();
+        $response = [
+            'status' => 200,
+            'error' => "false",
+            'message' => '',
+            'totaldata' => count($data),
+            'data' => $data,
+        ];
+
+        return $this->respond($response, 200);
     }
 
-    // public function show($id = null){
-    //     $data = $this->model->where('id', $id)->findAll();
-    //     if($data){
-    //         return $this->respond($data, 200);
-    //     } else {
-    //         return $this->failNotFound("Data tidak ditemukan untuk id $id");
-    //     }
-    // }
+    public function show($cari = null)
+    {
+        $modelProduk = new Modelproduk();
 
-    // public function create()
-    // {
-    //     $data = $this->request->getPost();
+        $data = $modelProduk->orLike('produk_nama', $cari)->get()->getResult();
 
-    //     // $this->model->save($data);
-    //     if(!$this->model->save($data)) {
-    //         return $this->fail($this->model->errors());
-    //     }
-
-    //     $response = [
-    //         'status' => 201,
-    //         'error' => null,
-    //         'messages' => [
-    //             'success' => 'Berhasil memasukkan data pelanggan'
-    //         ]
-    //     ];
-    //     return $this->respond($response);
-    // }
-
-    // public function update($id = null)
-    // {
-    //     $data = $this->request->getRawInput();
-    //     $data['id'] = $id;
-
-    //     $isExist = $this->model->where('id', $id)->findAll();
-    //     if(!$isExist) {
-    //         return $this->failNotFound("Data tidak ditemukan untuk id $id");
-    //     }
-
-    //     if(!$this->model->save($data)) {
-    //         return $this->fail($this->model->errors());
-    //     }
-
-    //     $response = [
-    //         'status'=>200,
-    //         'error'=>null,
-    //         'messages'=>[
-    //             'success'=>"Data pelanggan dengan id $id berhasil diupdate"
-    //         ]
-    //     ];
-    //     return $this->respond($response);
-    // }
-
-    // public function delete($id = null)
-    // {
-    //     $data = $this->model->where('id', $id)->findAll();
-    //     if($data){
-    //         $this->model->delete($id);
-    //         $response = [
-    //             'status'=>200,
-    //             'error'=>null,
-    //             'messages'=>[
-    //                 'success'=>'Data berhasil dihapus'
-    //             ]
-    //         ];
-    //             return $this->respondDeleted($response);
-    //     } else {
-    //         return $this->failNotFound('Data tidak ditemukan');
-    //     }
-    // }
-
+        if (count($data) > 1) {
+            $response = [
+                'status' => 200,
+                'error' => "false",
+                'message' => '',
+                'totaldata' => count($data),
+                'data' => $data,
+            ];
+            return $this->respond($response, 200);
+        } else if (count($data) === 1) {
+            $response = [
+                'status' => 200,
+                'error' => "false",
+                'message' => '',
+                'totaldata' => count($data),
+                'data' => $data,
+            ];
+            return $this->respond($response, 200);
+        } else {
+            return $this->failNotFound('Maaf data ' . $cari . ' tidak ditemukan');
+        }
+    }
 }

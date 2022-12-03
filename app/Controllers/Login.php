@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
-use App\Models\ModelLogin;
+use App\Models\Modellogin;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -17,7 +17,7 @@ class Login extends ResourceController
     public function index()
     {
         
-        $modelLogin = new ModelLogin();
+        $modelLogin = new Modellogin();
         $username = $this->request->getVar("username");
         $userpassword = $this->request->getVar("userpassword");
 

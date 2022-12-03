@@ -7,5 +7,5 @@ use CodeIgniter\Model;
 class Modelproduk extends Model
 {
     protected $table = 'produk';
-    protected $allowedFields = ['nama', 'harga', 'gambar'];
+    protected $allowedFields = ['produk_nama', 'produk_harga', 'produk_gambar'];
 }
