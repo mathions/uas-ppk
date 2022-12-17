@@ -61,7 +61,6 @@ class Content extends ResourceController
     {
         $modelContent = new Modelcontent();
 
-
         $image = $this->request->getPost("image");
         $caption = $this->request->getPost("caption");
         $date = $this->request->getPost("date");
@@ -81,7 +80,22 @@ class Content extends ResourceController
         return $this->respond ($response,201);
     }
 
-    public
+    public function update($id = null)
+    {
+        $modelContent = new Modelcontent();
+        $data = [
+            'image' => $this->request->getVar("image"),
+            'caption' => $this->request->getPost("caption"),
+        ];
+        $data = $this->request->getRawInput();
+        $modelContent->update($id, $data);
+        $response = [
+            'status' => 200,
+            'error' => null,
+            'message' => "Data has been updated",
+        ];
+        return $this->respond($response);
+    }
 
 
 
