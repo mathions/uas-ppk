@@ -29,9 +29,10 @@ class Content extends ResourceController
 
     public function show($cari = null)
     {
-        $modelContent = new Modelproduk();
+        $modelContent = new Modelcontent();
 
-        $data = $modelContent->orLike('caption', $cari)->get()->getResult();
+        $array = ['caption' => $cari, 'id' => $cari];
+        $data = $modelContent->orLike($array)->get()->getResult();
 
         if (count($data) > 1) {
             $response = [
@@ -79,4 +80,28 @@ class Content extends ResourceController
 
         return $this->respond ($response,201);
     }
+
+    public
+
+
+
+    public function delete($id = null)
+    {
+        $modelContent= new Modelcontent();
+
+        $cekData = $modelContent->find($id);
+        if ($cekData){
+
+            $modelContent->delete($id);
+            $response = [
+                'status' => 200,
+                'error' => null,
+                'message' => 'Content has been deleted'
+            ];
+            return $this->respondDeleted($response);
+        } else {
+            return $this->failNotFound('No Found');
+        }
+    }
+
 }
