@@ -31,8 +31,13 @@ class Content extends ResourceController
     {
         $modelContent = new Modelcontent();
 
-        $array = ['caption' => $cari, 'id' => $cari];
-        $data = $modelContent->orLike($array)->get()->getResult();
+        $cek = is_numeric($cari);
+        
+        if ($cek == 1){
+            $data = $modelContent->where('id', $cari)->get()->getResult();
+        } else {
+            $data = $modelContent->orLike('caption', $cari)->get()->getResult();
+        }
 
         if (count($data) > 1) {
             $response = [
