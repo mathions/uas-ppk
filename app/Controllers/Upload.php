@@ -85,7 +85,7 @@ class Upload extends ResourceController
 
             $response = [
                 'status' => 404,
-                'error' => 404,
+                'error' => true,
                 'message' => $error_msg
             ];
 
@@ -111,7 +111,7 @@ class Upload extends ResourceController
 
             $response = [
                 'status' => 201,
-                'error' => 201,
+                'error' => false,
                 'message' => 'Content Image Uploaded'
             ];
 
