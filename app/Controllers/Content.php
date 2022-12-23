@@ -15,7 +15,7 @@ class Content extends ResourceController
     public function index()
     {
         $modelContent = new Modelcontent();
-        $data = $modelContent->findAll();
+        $data = $modelContent->orderBy('id', 'DESC')->findAll();
         $response = [
             'status' => 200,
             'error' => "false",
@@ -66,14 +66,12 @@ class Content extends ResourceController
     {
         $modelContent = new Modelcontent();
 
-        $image = $this->request->getPost("image");
+        $username = $this->request->getPost("username");
         $caption = $this->request->getPost("caption");
-        $date = $this->request->getPost("date");
 
         $modelContent->insert([
-            'image' => $image,
-            'caption' => $caption,
-            'date' => $date,
+            'username' => $username,
+            'caption' => $caption
         ]);
 
         $response = [
@@ -89,7 +87,6 @@ class Content extends ResourceController
     {
         $modelContent = new Modelcontent();
         $data = [
-            'image' => $this->request->getVar("image"),
             'caption' => $this->request->getPost("caption"),
         ];
         $data = $this->request->getRawInput();

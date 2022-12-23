@@ -19,7 +19,7 @@ class Login extends ResourceController
         
         $modelLogin = new Modellogin();
         $username = $this->request->getVar("username");
-        $userpassword = $this->request->getVar("userpassword");
+        $userpassword = md5($this->request->getVar("userpassword"));
 
         $cekUser = $modelLogin->ceklogin($username);
 
@@ -28,7 +28,7 @@ class Login extends ResourceController
             $row = $cekUser->getRowArray();
             $pass_hash = $row['userpassword'];
 
-            if(password_verify($userpassword, $pass_hash)){
+            if($userpassword == $pass_hash){
                 $issudate_claim = time();
                 $expire_time = $issudate_claim +3600;
 
@@ -41,18 +41,18 @@ class Login extends ResourceController
                 $output = [
                     'status' => 200,
                     'error' => 200,
-                    'messages' => 'Login Berhasil',
+                    'messages' => 'Login Successful',
                     'token' => $token,
                     'username' => $username,
-                    'email' => $row['useremail']
+                    'id' => $row['id']
                 ];
                 return $this->respond($output,200);
 
             }else{
-                return $this->failNotFound("Maaf, user/password anda salah");
+                return $this->failNotFound("The username or password is incorrect");
             }
         }else{
-            return $this->failNotFound("Maaf, user/password anda salah");
+            return $this->failNotFound("The username or password is incorrect");
         }
     }
 

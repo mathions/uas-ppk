@@ -40,11 +40,11 @@ $routes->get('/', 'Home::index');
 //     'filter' => 'auth',
 // ]);
 $routes->resource('produk');
-$routes->resource('content', [
-    'filter' => 'auth',
-]);
+$routes->resource('content');
 $routes->resource('login');
 $routes->resource('upload');
+$routes->resource('uploadprofile');
+$routes->resource('user');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
